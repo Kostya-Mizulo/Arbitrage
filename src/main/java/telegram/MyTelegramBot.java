@@ -19,12 +19,14 @@ import java.util.Properties;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class MyTelegramBot extends TelegramLongPollingBot {
+    private static MyTelegramBot bot;
     private String botUsername;
     private String botToken;
     private long chatId;
     private Session session = new Session();
 
     public MyTelegramBot(){
+        bot = this;
         Properties properties = new Properties();
 
         try (FileInputStream fileInputStream = new FileInputStream("src/main/resources/config.properties")) {
