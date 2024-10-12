@@ -118,4 +118,8 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             sendMessageToChat("Число, блять, введи, заебал!");
         }
     }
+
+    public static MyTelegramBot getBot(){
+        return bot;
+    }
 }
