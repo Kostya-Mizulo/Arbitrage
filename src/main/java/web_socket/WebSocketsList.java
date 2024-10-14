@@ -11,7 +11,7 @@ public class WebSocketsList {
 
 
     public void startWebSockets() {
-        //startBybitWebSockets();
+        startBybitWebSockets();
         startBinanceWebSocket();
     }
 
@@ -29,12 +29,14 @@ public class WebSocketsList {
 
     private void startBinanceWebSocket() {
         ArrayList<String> binanceSubscriptionString = BinanceSubscriptionString.getSubscription();
-        String uri = "wss://ws-api.binance.com:443/ws-api/v3";
+        String uri = "wss://stream.binance.com:9443/stream?streams=";
 
         for (int i = 0; i < binanceSubscriptionString.size(); i++){
-            WebSocketClient webSocket = new WebSocketClient(uri, "Binance");
+            StringBuilder sb = new StringBuilder();
+            sb.append(uri).append(binanceSubscriptionString.get(i));
+            String fullUri = sb.toString();
+            WebSocketClient webSocket = new WebSocketClient(fullUri, "Binance");
 
-            webSocket.sendMessage(binanceSubscriptionString.get(i));
             webSockets.add(webSocket);
         }
     }

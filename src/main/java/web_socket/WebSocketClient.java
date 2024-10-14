@@ -1,5 +1,6 @@
 package web_socket;
 
+import binance.BinancePriceExtractor;
 import bybit.BybitPriceExtractor;
 
 import javax.websocket.*;
@@ -17,6 +18,7 @@ public class WebSocketClient {
 
 
     public WebSocketClient(String uri, String exchange) {
+        System.out.println(uri);
         this.exchange = exchange;
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
@@ -37,10 +39,25 @@ public class WebSocketClient {
     @OnMessage
     public void onMessage(String message) {
         System.out.println(message);
-        if (BybitPriceExtractor.extractPriceFromJson(message) != null) {
-            Map.Entry<String, Double> entry = BybitPriceExtractor.extractPriceFromJson(message);
-            coinsFromWebSocket.put(entry.getKey(), entry.getValue());
+
+        switch (exchange){
+            case "Bybit": {
+                if (BybitPriceExtractor.extractPriceFromJson(message) != null) {
+                    Map.Entry<String, Double> entry = BybitPriceExtractor.extractPriceFromJson(message);
+                    coinsFromWebSocket.put(entry.getKey(), entry.getValue());
+                }
+                break;
+            }
+
+            case "Binance": {
+                if (BinancePriceExtractor.extractPriceFromJson(message) != null) {
+                    Map.Entry<String, Double> entry = BinancePriceExtractor.extractPriceFromJson(message);
+                    coinsFromWebSocket.put(entry.getKey(), entry.getValue());
+                }
+                break;
+            }
         }
+
     }
 
 

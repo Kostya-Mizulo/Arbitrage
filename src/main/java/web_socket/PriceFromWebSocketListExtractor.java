@@ -19,6 +19,10 @@ public class PriceFromWebSocketListExtractor {
                         coin.setBybitPrice(priceMap.getValue());
                         break;
                     }
+                    case "Binance": {
+                        coin.setBinancePrice(priceMap.getValue());
+                        break;
+                    }
                 }
             }
         }
