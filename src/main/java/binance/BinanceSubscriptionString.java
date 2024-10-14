@@ -5,16 +5,7 @@ import coins.CoinsList;
 import java.util.ArrayList;
 
 public class BinanceSubscriptionString {
-    private static String getSubscriptionStart(){
-        String subscriptionStringStart = "{\"id\": null, \"method\": \"ticker.price\", \"params\":{\"symbols\": [";
 
-
-        return subscriptionStringStart;
-    }
-
-    private static String getSubscriptionEnd() {
-        return "]}}";
-    }
 
 
     public static ArrayList<String> getSubscription() {
@@ -25,14 +16,14 @@ public class BinanceSubscriptionString {
 
         while (isCoinsLeft) {
             StringBuilder subscriptionString = new StringBuilder();
-            subscriptionString.append(getSubscriptionStart());
 
             for (int i = 0; i < 10; i++){
-                subscriptionString.append("\"").append(CoinsList.coinsList.get(coinPosition).getCoin())
-                        .append("USDT\"");
+                subscriptionString.append(CoinsList.coinsList.get(coinPosition).getCoin().toLowerCase())
+                        .append("usdt").append("@trade");
+
                 coinPosition++;
                 if (i<9 && coinPosition < countOfCoins) {
-                    subscriptionString.append(",");
+                    subscriptionString.append("/");
                 }
 
                 if (coinPosition == countOfCoins) {
@@ -40,7 +31,6 @@ public class BinanceSubscriptionString {
                     break;
                 }
             }
-            subscriptionString.append(getSubscriptionEnd());
             subscriptionStringList.add(String.valueOf(subscriptionString));
         }
 
