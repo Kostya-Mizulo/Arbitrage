@@ -35,8 +35,11 @@ public class CoinsList {
         for (Map.Entry<String, Coin> entry : coinsMap.entrySet()){
             ms.append(entry.getKey()).append(":\n").append("Bybit: ").append(entry.getValue().getBybitPrice())
                     .append("\n").append("Binance: ").append(entry.getValue().getBinancePrice())
+                    .append("\nSpread: ").append(entry.getValue().getSpreadPercent())
                     .append("\n\n");
         }
         return ms.toString();
     }
+
+
 }

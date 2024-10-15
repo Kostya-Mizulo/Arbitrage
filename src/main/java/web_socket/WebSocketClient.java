@@ -1,7 +1,8 @@
 package web_socket;
 
-import binance.BinancePriceExtractor;
-import bybit.BybitPriceExtractor;
+import exchanges.Exchanges;
+import exchanges.binance.BinancePriceExtractor;
+import exchanges.bybit.BybitPriceExtractor;
 
 import javax.websocket.*;
 import java.net.URI;
@@ -11,13 +12,13 @@ import java.util.Map;
 @ClientEndpoint
 public class WebSocketClient {
 
-    private String exchange;
+    private Exchanges exchange;
     private Session userSession = null;
     private HashMap<String, Double> coinsFromWebSocket = new HashMap<>();
 
 
 
-    public WebSocketClient(String uri, String exchange) {
+    public WebSocketClient(String uri, Exchanges exchange) {
         System.out.println(uri);
         this.exchange = exchange;
         try {
@@ -41,7 +42,7 @@ public class WebSocketClient {
         System.out.println(message);
 
         switch (exchange){
-            case "Bybit": {
+            case BYBIT: {
                 if (BybitPriceExtractor.extractPriceFromJson(message) != null) {
                     Map.Entry<String, Double> entry = BybitPriceExtractor.extractPriceFromJson(message);
                     coinsFromWebSocket.put(entry.getKey(), entry.getValue());
@@ -49,7 +50,7 @@ public class WebSocketClient {
                 break;
             }
 
-            case "Binance": {
+            case BINANCE: {
                 if (BinancePriceExtractor.extractPriceFromJson(message) != null) {
                     Map.Entry<String, Double> entry = BinancePriceExtractor.extractPriceFromJson(message);
                     coinsFromWebSocket.put(entry.getKey(), entry.getValue());
@@ -81,7 +82,7 @@ public class WebSocketClient {
     public HashMap<String, Double> getCoinsFromWebSocket() {
         return coinsFromWebSocket;
     }
-    public String getExchange() {
+    public Exchanges getExchange() {
         return exchange;
     }
 }

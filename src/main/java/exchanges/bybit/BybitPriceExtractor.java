@@ -1,4 +1,4 @@
-package bybit;
+package exchanges.bybit;
 
 import org.json.JSONObject;
 

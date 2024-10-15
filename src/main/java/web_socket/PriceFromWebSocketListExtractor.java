@@ -15,16 +15,20 @@ public class PriceFromWebSocketListExtractor {
             for (Map.Entry<String, Double> priceMap : webSocket.getCoinsFromWebSocket().entrySet()){
                 Coin coin = CoinsList.coinsMap.get(priceMap.getKey());
                 switch (webSocket.getExchange()){
-                    case "Bybit": {
+                    case BYBIT: {
                         coin.setBybitPrice(priceMap.getValue());
                         break;
                     }
-                    case "Binance": {
+                    case BINANCE: {
                         coin.setBinancePrice(priceMap.getValue());
                         break;
                     }
                 }
             }
+        }
+
+        for (Coin coin : CoinsList.coinsList){
+            coin.setMinMaxValue();
         }
     }
 }

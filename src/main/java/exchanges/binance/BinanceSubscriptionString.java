@@ -1,4 +1,4 @@
-package binance;
+package exchanges.binance;
 
 import coins.CoinsList;
 
@@ -19,7 +19,7 @@ public class BinanceSubscriptionString {
 
             for (int i = 0; i < 10; i++){
                 subscriptionString.append(CoinsList.coinsList.get(coinPosition).getCoin().toLowerCase())
-                        .append("usdt").append("@trade");
+                        .append("usdt").append("@kline_1s");
 
                 coinPosition++;
                 if (i<9 && coinPosition < countOfCoins) {

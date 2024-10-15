@@ -1,4 +1,4 @@
-package bybit;
+package exchanges.bybit;
 
 import coins.Coin;
 import coins.CoinsList;

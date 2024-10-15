@@ -1,7 +1,8 @@
 package web_socket;
 
-import binance.BinanceSubscriptionString;
-import bybit.BybitSubscriptionString;
+import exchanges.Exchanges;
+import exchanges.binance.BinanceSubscriptionString;
+import exchanges.bybit.BybitSubscriptionString;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class WebSocketsList {
         String uri = "wss://stream.bybit.com/v5/public/spot";
 
         for (int i = 0; i < bybitSubscriptionString.size(); i++){
-            WebSocketClient webSocket = new WebSocketClient(uri, "Bybit");
+            WebSocketClient webSocket = new WebSocketClient(uri, Exchanges.BYBIT);
 
             webSocket.sendMessage(bybitSubscriptionString.get(i));
             webSockets.add(webSocket);
@@ -35,7 +36,7 @@ public class WebSocketsList {
             StringBuilder sb = new StringBuilder();
             sb.append(uri).append(binanceSubscriptionString.get(i));
             String fullUri = sb.toString();
-            WebSocketClient webSocket = new WebSocketClient(fullUri, "Binance");
+            WebSocketClient webSocket = new WebSocketClient(fullUri, Exchanges.BINANCE);
 
             webSockets.add(webSocket);
         }
