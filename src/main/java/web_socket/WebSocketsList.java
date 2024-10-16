@@ -2,6 +2,7 @@ package web_socket;
 
 import exchanges.Exchanges;
 import exchanges.binance.BinanceSubscriptionString;
+import exchanges.bingx.BingxSubscriptionString;
 import exchanges.bybit.BybitSubscriptionString;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class WebSocketsList {
     public void startWebSockets() {
         startBybitWebSockets();
         startBinanceWebSocket();
+        startBingxWebSocket();
     }
 
     private void startBybitWebSockets(){
@@ -42,7 +44,37 @@ public class WebSocketsList {
         }
     }
 
+    private void startBingxWebSocket(){
+        ArrayList<String> bingxSubscriptionString = BingxSubscriptionString.getSubscription();
+        String uri = "wss://open-api-swap.bingx.com/swap-market";
 
+        int whichSubscriptionStringNow = 0;
+        int countOfSubscriptionStrings = bingxSubscriptionString.size();
+        boolean isCoinsLeft = true;
+
+        while (isCoinsLeft) {
+            WebSocketClient webSocket = new WebSocketClient(uri, Exchanges.BINGX);
+            webSockets.add(webSocket);
+
+            for (int i = 0; i < 10; i++){
+                System.out.println("Отправил подписку: " + bingxSubscriptionString.get(whichSubscriptionStringNow));
+                webSocket.sendMessage(bingxSubscriptionString.get(whichSubscriptionStringNow));
+                whichSubscriptionStringNow++;
+                if (whichSubscriptionStringNow == countOfSubscriptionStrings) {
+                    isCoinsLeft = false;
+                    break;
+                }
+            }
+        }
+
+    }
+
+
+    public void initiateSendingPingPongMessages(){
+        for (WebSocketClient webSocket : webSockets) {
+            webSocket.doPingPong();
+        }
+    }
 
     public ArrayList<WebSocketClient> getWebSockets() {
         return webSockets;

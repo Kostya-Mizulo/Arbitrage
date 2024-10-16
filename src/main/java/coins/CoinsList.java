@@ -3,9 +3,7 @@ package coins;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CoinsList {
     public static ArrayList<Coin> coinsList = new ArrayList<>();
@@ -40,6 +38,31 @@ public class CoinsList {
         }
         return ms.toString();
     }
+
+    public static Spread findMaxSpreadWithExpectedPercentage(double expectedPercentage){
+
+        ArrayList<Spread> spreadList = new ArrayList<>();
+
+        for (Coin coin : coinsList){
+            coin.setMinMaxValue();
+
+            if (coin.getSpreadPercent() >= expectedPercentage) {
+                spreadList.add(new Spread(coin.getExchangeWithMinPrice(),
+                        coin.getExchangeWithMaxPrice(),
+                        coin,
+                        coin.getMinPrice(),
+                        coin.getMaxPrice(),
+                        coin.getSpreadPercent()));
+            }
+        }
+
+        if (spreadList.isEmpty()) return null;
+        Optional<Spread> maxSpread = spreadList.stream().max(Comparator.comparingDouble(Spread::getSpreadPercent));
+
+        return maxSpread.get();
+
+    }
+
 
 
 }

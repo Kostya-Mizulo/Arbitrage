@@ -1,7 +1,9 @@
 package session;
 
 import coins.CoinsList;
+import coins.Spread;
 import telegram.MyTelegramBot;
+import telegram.TelegramMessagesBuilder;
 import web_socket.PriceFromWebSocketListExtractor;
 import web_socket.WebSocketsList;
 
@@ -16,6 +18,8 @@ public class Session {
     private SessionStatus sessionStatus = SessionStatus.INITIAL;
     private WebSocketsList webSocketsList = new WebSocketsList();
     private ScheduledExecutorService scheduler;
+    private boolean hasCoinWithExpectedSpread;
+    private double expectedSpread = 0.0;
 
 
 
@@ -102,13 +106,37 @@ public class Session {
                     PriceFromWebSocketListExtractor.extractPriceFromWebSocketList(webSocketsList);
 
                     Thread.sleep(5);
-                    MyTelegramBot.getBot().sendMessageToChat(CoinsList.printAllCoins());
+                    Spread spread = CoinsList.findMaxSpreadWithExpectedPercentage(expectedSpread);
+                    String message = TelegramMessagesBuilder.createMessageAboutSpreadAsSignalForTelegram(spread);
+                    if (message != null) MyTelegramBot.getBot().sendMessageToChat(message);
+                    webSocketsList.initiateSendingPingPongMessages();
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         };
-        scheduler.scheduleWithFixedDelay(task, 5, 5, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(task, 5, 10, TimeUnit.SECONDS);
+    }
+
+
+
+
+
+
+    public boolean isHasCoinWithExpectedSpread() {
+        return hasCoinWithExpectedSpread;
+    }
+
+    public void setHasCoinWithExpectedSpread(boolean hasCoinWithExpectedSpread) {
+        this.hasCoinWithExpectedSpread = hasCoinWithExpectedSpread;
+    }
+
+    public double getExpectedSpread() {
+        return expectedSpread;
+    }
+
+    public void setExpectedSpread(double expectedSpread) {
+        this.expectedSpread = expectedSpread;
     }
 }

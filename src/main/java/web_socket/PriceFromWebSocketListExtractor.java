@@ -23,12 +23,12 @@ public class PriceFromWebSocketListExtractor {
                         coin.setBinancePrice(priceMap.getValue());
                         break;
                     }
+                    case BINGX: {
+                        coin.setBingxPrice(priceMap.getValue());
+                        break;
+                    }
                 }
             }
-        }
-
-        for (Coin coin : CoinsList.coinsList){
-            coin.setMinMaxValue();
         }
     }
 }

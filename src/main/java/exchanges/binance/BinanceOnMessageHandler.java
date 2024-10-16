@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import java.util.AbstractMap;
 import java.util.Map;
 
-public class BinancePriceExtractor {
-    public static Map.Entry extractPriceFromJson(String json) {
+public class BinanceOnMessageHandler {
+    public static Map.Entry handleMessageFromServer(String json) {
         JSONObject jsonObject = new JSONObject(json);
         if (jsonObject.has("data")) {
             JSONObject dataObject = jsonObject.getJSONObject("data");
@@ -34,6 +34,9 @@ public class BinancePriceExtractor {
 
                 Map.Entry<String, Double> pair = new AbstractMap.SimpleEntry<>(symbol, lastPrice);
                 return pair;
-            } else return null;
+            } else {
+            System.out.println(json);
+            return null;
         }
+    }
 }

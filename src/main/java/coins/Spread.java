@@ -10,6 +10,15 @@ public class Spread {
     private double maxPrice;
     private double spreadPercent;
 
+    public Spread(Exchanges exchangeWithMinPrice, Exchanges exchangeWithMaxPrice, Coin coinOfSpread, double minPrice, double maxPrice, double spreadPercent) {
+        this.exchangeWithMinPrice = exchangeWithMinPrice;
+        this.exchangeWithMaxPrice = exchangeWithMaxPrice;
+        this.coinOfSpread = coinOfSpread;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
+        this.spreadPercent = spreadPercent;
+    }
+
     public Exchanges getExchangeWithMinPrice() {
         return exchangeWithMinPrice;
     }
