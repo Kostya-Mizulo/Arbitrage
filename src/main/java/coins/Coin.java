@@ -79,12 +79,13 @@ public class Coin {
             }
         }
 
-        spreadPercent = ((maxValue_local - minValue_local)/minValue_local)*100;
-        exchangeWithMinPrice = exchangeWithMin_local;
-        exchangeWithMaxPrice = exchangeWithMax_local;
+
+        exchangeWithMinPrice = minValue_local > 0.0 ? exchangeWithMin_local : null;
+        exchangeWithMaxPrice = maxValue_local > 0.0 ? exchangeWithMax_local : null;
         minPrice = minValue_local;
         maxPrice = maxValue_local;
 
+        if (exchangeWithMinPrice != null && exchangeWithMaxPrice != null) spreadPercent = ((maxValue_local - minValue_local)/minValue_local)*100;
     }
 
 

@@ -62,7 +62,6 @@ public class WebSocketClient {
 
             if ("Ping".equals(convertedMessage)) {
                 sendMessage("Pong");
-                System.out.println("Send Pong");
                 return;
             } else {
                 redirectMessage(convertedMessage);
@@ -73,6 +72,7 @@ public class WebSocketClient {
     }
 
     private void redirectMessage(String message) {
+        System.out.println(message);
         switch (exchange){
             case BYBIT: {
                 if (BybitOnMessageHandler.handleMessageFromServer(message) != null) {

@@ -19,7 +19,7 @@ public class Session {
     private WebSocketsList webSocketsList = new WebSocketsList();
     private ScheduledExecutorService scheduler;
     private boolean hasCoinWithExpectedSpread;
-    private double expectedSpread = 0.0;
+    private double expectedSpread = 1.0;
 
 
 

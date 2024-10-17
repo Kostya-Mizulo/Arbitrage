@@ -14,8 +14,8 @@ public class WebSocketsList {
 
     public void startWebSockets() {
         startBybitWebSockets();
-        startBinanceWebSocket();
-        startBingxWebSocket();
+        //startBinanceWebSocket();
+        //startBingxWebSocket();
     }
 
     private void startBybitWebSockets(){
