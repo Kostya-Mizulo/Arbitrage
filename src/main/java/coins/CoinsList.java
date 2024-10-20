@@ -28,16 +28,6 @@ public class CoinsList {
     }
 
 
-    public static String printAllCoins(){
-        StringBuilder ms = new StringBuilder();
-        for (Map.Entry<String, Coin> entry : coinsMap.entrySet()){
-            ms.append(entry.getKey()).append(":\n").append("Bybit: ").append(entry.getValue().getBybitPrice())
-                    .append("\n").append("Binance: ").append(entry.getValue().getBinancePrice())
-                    .append("\nSpread: ").append(entry.getValue().getSpreadPercent())
-                    .append("\n\n");
-        }
-        return ms.toString();
-    }
 
     public static Spread findMaxSpreadWithExpectedPercentage(double expectedPercentage){
 

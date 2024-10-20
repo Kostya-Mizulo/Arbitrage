@@ -14,7 +14,7 @@ public class BingxSubscriptionString {
     }
 
     private static String getSubscriptionEnd() {
-        return "-USDT@markPrice\"}";
+        return "-USDT@lastPrice\"}";
     }
 
 

@@ -27,6 +27,10 @@ public class PriceFromWebSocketListExtractor {
                         coin.setBingxPrice(priceMap.getValue());
                         break;
                     }
+                    case KUCOIN: {
+                        coin.setKucoinPrice(priceMap.getValue());
+                        break;
+                    }
                 }
             }
         }

@@ -3,5 +3,6 @@ package exchanges;
 public enum Exchanges {
     BYBIT,
     BINANCE,
-    BINGX
+    BINGX,
+    KUCOIN
 }

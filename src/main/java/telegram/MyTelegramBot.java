@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
@@ -38,6 +40,11 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         }
 
         setCommands();
+
+//        Executors.newScheduledThreadPool(1)
+//                .scheduleAtFixedRate(() -> {
+//                    sendPing();
+//                }, 1, 1, TimeUnit.MINUTES);
     }
 
     @Override
@@ -121,5 +128,9 @@ public class MyTelegramBot extends TelegramLongPollingBot {
 
     public static MyTelegramBot getBot(){
         return bot;
+    }
+
+    private void sendPing() {
+        sendMessageToChat("Pong!");
     }
 }

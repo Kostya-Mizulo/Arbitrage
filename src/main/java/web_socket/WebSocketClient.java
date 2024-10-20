@@ -4,6 +4,7 @@ import exchanges.Exchanges;
 import exchanges.binance.BinanceOnMessageHandler;
 import exchanges.bingx.BingxOnMessageHandler;
 import exchanges.bybit.BybitOnMessageHandler;
+import exchanges.kucoin.KucoinOnMessageHandler;
 
 import javax.websocket.*;
 import java.io.ByteArrayInputStream;
@@ -72,7 +73,6 @@ public class WebSocketClient {
     }
 
     private void redirectMessage(String message) {
-        System.out.println(message);
         switch (exchange){
             case BYBIT: {
                 if (BybitOnMessageHandler.handleMessageFromServer(message) != null) {
@@ -92,6 +92,13 @@ public class WebSocketClient {
             case BINGX: {
                 if (BingxOnMessageHandler.handleMessageFromServer(message) != null) {
                     Map.Entry<String, Double> entry = BingxOnMessageHandler.handleMessageFromServer(message);
+                    coinsFromWebSocket.put(entry.getKey(), entry.getValue());
+                }
+                break;
+            }
+            case KUCOIN: {
+                if (KucoinOnMessageHandler.handleMessageFromServer(message) != null) {
+                    Map.Entry<String, Double> entry = KucoinOnMessageHandler.handleMessageFromServer(message);
                     coinsFromWebSocket.put(entry.getKey(), entry.getValue());
                 }
                 break;
@@ -131,6 +138,11 @@ public class WebSocketClient {
                 break;
             }
             case BINGX: {
+                break;
+            }
+            case KUCOIN: {
+                pingpong = "{\"type\": \"ping\"}";
+                sendMessage(pingpong);
                 break;
             }
         }

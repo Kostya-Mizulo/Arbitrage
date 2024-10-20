@@ -12,6 +12,7 @@ public class BingxOnMessageHandler {
             JSONObject dataObject = jsonObject.getJSONObject("data");
 
 
+
             String symbol = dataObject.getString("s");
 
             //Вырезаем только основное значение монеты----------------
@@ -23,7 +24,7 @@ public class BingxOnMessageHandler {
                     String cleanedSymbol = upperSymbol.substring(0, endIndex);
                     cleanedSymbol = cleanedSymbol.replaceAll("[-/.]", "");
 
-                    Double lastPrice = dataObject.getDouble("p");
+                    Double lastPrice = dataObject.getDouble("c");
                     Map.Entry<String, Double> pair = new AbstractMap.SimpleEntry<>(cleanedSymbol, lastPrice);
                     return pair;
                 }

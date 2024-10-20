@@ -10,6 +10,7 @@ public class Coin {
     private double bybitPrice;
     private double binancePrice;
     private double bingxPrice;
+    private double kucoinPrice;
     private double spreadPercent;
     private Exchanges exchangeWithMinPrice;
     private Exchanges exchangeWithMaxPrice;
@@ -50,6 +51,15 @@ public class Coin {
         this.bingxPrice = bingxPrice;
     }
 
+    public double getKucoinPrice() {
+        return kucoinPrice;
+    }
+
+    public void setKucoinPrice(double kucoinPrice) {
+        this.kucoinPrice = kucoinPrice;
+    }
+
+
 
     public void setMinMaxValue(){
         exchangeWithMinPrice = null;
@@ -58,8 +68,8 @@ public class Coin {
         maxPrice = 0.0;
 
 
-        double[] prices = {bybitPrice, binancePrice, bingxPrice};
-        Exchanges[] exchange = {Exchanges.BYBIT, Exchanges.BINANCE, Exchanges.BINGX};
+        double[] prices = {bybitPrice, binancePrice, bingxPrice, kucoinPrice};
+        Exchanges[] exchange = {Exchanges.BYBIT, Exchanges.BINANCE, Exchanges.BINGX, Exchanges.KUCOIN};
 
         double minValue_local = prices[0];
         double maxValue_local = prices[0];

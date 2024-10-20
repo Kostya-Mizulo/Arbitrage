@@ -7,14 +7,14 @@ import java.util.ArrayList;
 
 public class BybitSubscriptionString {
     private static String getSubscriptionStart(){
-        String subscriptionStringStart = "{\"op\": \"subscribe\", \"args\":[";
+        String subscriptionStringStart = "{\"op\": \"subscribe\", \"args\":[\"tickers.";
 
 
         return subscriptionStringStart;
     }
 
     private static String getSubscriptionEnd() {
-        return "]}";
+        return "USDT\"]}";
     }
 
 
@@ -26,21 +26,16 @@ public class BybitSubscriptionString {
 
         while (isCoinsLeft) {
             StringBuilder subscriptionString = new StringBuilder();
-            subscriptionString.append(getSubscriptionStart());
 
-            for (int i = 0; i < 10; i++){
-                subscriptionString.append("\"tickers.").append(CoinsList.coinsList.get(coinPosition).getCoin()).append("USDT\"");
-                coinPosition++;
-                if (i<9 && coinPosition < countOfCoins) {
-                    subscriptionString.append(",");
-                }
 
-                if (coinPosition == countOfCoins) {
-                    isCoinsLeft = false;
-                    break;
-                }
-            }
-            subscriptionString.append(getSubscriptionEnd());
+            subscriptionString.append(getSubscriptionStart())
+                    .append(CoinsList.coinsList.get(coinPosition).getCoin())
+                    .append(getSubscriptionEnd());
+
+            coinPosition++;
+            if (coinPosition == countOfCoins) isCoinsLeft = false;
+
+
             subscriptionStringList.add(String.valueOf(subscriptionString));
         }
 
