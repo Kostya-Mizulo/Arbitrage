@@ -41,10 +41,10 @@ public class MyTelegramBot extends TelegramLongPollingBot {
 
         setCommands();
 
-//        Executors.newScheduledThreadPool(1)
-//                .scheduleAtFixedRate(() -> {
-//                    sendPing();
-//                }, 1, 1, TimeUnit.MINUTES);
+        Executors.newScheduledThreadPool(1)
+                .scheduleAtFixedRate(() -> {
+                    sendPing();
+                }, 1, 30, TimeUnit.MINUTES);
     }
 
     @Override

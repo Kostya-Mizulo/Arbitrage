@@ -10,10 +10,12 @@ public class BingxOnMessageHandler {
         JSONObject jsonObject = new JSONObject(json);
         if (jsonObject.has("data") && jsonObject.get("data") instanceof JSONObject) {
             JSONObject dataObject = jsonObject.getJSONObject("data");
+            JSONObject kObject = dataObject.getJSONObject("K");
 
 
 
-            String symbol = dataObject.getString("s");
+            String symbol = kObject.getString("s");
+
 
             //Вырезаем только основное значение монеты----------------
             String upperSymbol = symbol.toUpperCase();
@@ -24,14 +26,14 @@ public class BingxOnMessageHandler {
                     String cleanedSymbol = upperSymbol.substring(0, endIndex);
                     cleanedSymbol = cleanedSymbol.replaceAll("[-/.]", "");
 
-                    Double lastPrice = dataObject.getDouble("c");
+                    Double lastPrice = kObject.getDouble("c");
                     Map.Entry<String, Double> pair = new AbstractMap.SimpleEntry<>(cleanedSymbol, lastPrice);
                     return pair;
                 }
             }
             //----------------
 
-            Double lastPrice = dataObject.getDouble("lastPrice");
+            Double lastPrice = kObject.getDouble("c");
 
             Map.Entry<String, Double> pair = new AbstractMap.SimpleEntry<>(symbol, lastPrice);
             return pair;

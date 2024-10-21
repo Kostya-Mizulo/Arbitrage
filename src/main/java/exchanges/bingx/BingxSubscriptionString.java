@@ -3,18 +3,20 @@ package exchanges.bingx;
 import coins.CoinsList;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class BingxSubscriptionString {
 
     private static String getSubscriptionStart(){
-        String subscriptionStringStart = "{\"reqType\": \"sub\", \"dataType\": \"";
+        String uuid = UUID.randomUUID().toString();
+        String subscriptionStringStart = "{\"id\": \"" + uuid+ "\",\"reqType\": \"sub\", \"dataType\": \"";
 
 
         return subscriptionStringStart;
     }
 
     private static String getSubscriptionEnd() {
-        return "-USDT@lastPrice\"}";
+        return "-USDT@kline_1min\"}";
     }
 
 

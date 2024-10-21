@@ -1,10 +1,13 @@
 package web_socket;
 
+import coins.Coin;
+import coins.CoinsList;
 import exchanges.Exchanges;
 import exchanges.binance.BinanceOnMessageHandler;
 import exchanges.bingx.BingxOnMessageHandler;
 import exchanges.bybit.BybitOnMessageHandler;
 import exchanges.kucoin.KucoinOnMessageHandler;
+import telegram.MyTelegramBot;
 
 import javax.websocket.*;
 import java.io.ByteArrayInputStream;
@@ -61,6 +64,7 @@ public class WebSocketClient {
 
             String convertedMessage = decompressGzip(bytes);
 
+
             if ("Ping".equals(convertedMessage)) {
                 sendMessage("Pong");
                 return;
@@ -73,6 +77,7 @@ public class WebSocketClient {
     }
 
     private void redirectMessage(String message) {
+
         switch (exchange){
             case BYBIT: {
                 if (BybitOnMessageHandler.handleMessageFromServer(message) != null) {
@@ -109,7 +114,10 @@ public class WebSocketClient {
 
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
+
         System.out.println("Session closed by: " + reason);
+        MyTelegramBot.getBot().sendMessageToChat("Session closed: " + this.exchange);
+        deleteCoinPriceIfWebSocketClosed();
     }
 
 
@@ -168,6 +176,31 @@ public class WebSocketClient {
             }
 
             return byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
+        }
+    }
+
+    private void deleteCoinPriceIfWebSocketClosed(){
+        for (Map.Entry<String, Double> entry : coinsFromWebSocket.entrySet()){
+            String coin = entry.getKey();
+            switch (exchange){
+                case BYBIT: {
+                    CoinsList.coinsMap.get(coin).setBybitPrice(0.0);
+                    break;
+                }
+                case BINANCE: {
+                    CoinsList.coinsMap.get(coin).setBinancePrice(0.0);
+                    break;
+                }
+                case BINGX: {
+                    CoinsList.coinsMap.get(coin).setBingxPrice(0.0);
+                    break;
+                }
+                case KUCOIN: {
+                    CoinsList.coinsMap.get(coin).setKucoinPrice(0.0);
+                    break;
+                }
+            }
+
         }
     }
 }

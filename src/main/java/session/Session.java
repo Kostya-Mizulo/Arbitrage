@@ -19,7 +19,7 @@ public class Session {
     private WebSocketsList webSocketsList = new WebSocketsList();
     private ScheduledExecutorService scheduler;
     private boolean hasCoinWithExpectedSpread;
-    private double expectedSpread = 0.0;
+    private double expectedSpread = 0.5;
 
 
 
@@ -116,7 +116,7 @@ public class Session {
                 }
             }
         };
-        scheduler.scheduleWithFixedDelay(task, 5, 10, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(task, 5, 5, TimeUnit.SECONDS);
     }
 
 
