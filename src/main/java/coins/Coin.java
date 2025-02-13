@@ -71,10 +71,10 @@ public class Coin {
         double[] prices = {bybitPrice, binancePrice, bingxPrice, kucoinPrice};
         Exchanges[] exchange = {Exchanges.BYBIT, Exchanges.BINANCE, Exchanges.BINGX, Exchanges.KUCOIN};
 
-        double minValue_local = prices[0];
-        double maxValue_local = prices[0];
-        Exchanges exchangeWithMin_local = exchange[0];
-        Exchanges exchangeWithMax_local = exchange[0];
+        double minValue_local = Double.MAX_VALUE;
+        double maxValue_local = Double.MIN_VALUE;
+        Exchanges exchangeWithMin_local = null;
+        Exchanges exchangeWithMax_local = null;
 
         for (int i = 0; i < prices.length; i++){
             if (prices[i] == 0.0) continue;
@@ -90,12 +90,12 @@ public class Coin {
         }
 
 
-        exchangeWithMinPrice = minValue_local > 0.0 ? exchangeWithMin_local : null;
+        exchangeWithMinPrice = (minValue_local > 0.0 && minValue_local < Double.MAX_VALUE) ? exchangeWithMin_local : null;
         exchangeWithMaxPrice = maxValue_local > 0.0 ? exchangeWithMax_local : null;
         minPrice = minValue_local;
         maxPrice = maxValue_local;
 
-        if (exchangeWithMinPrice != null && exchangeWithMaxPrice != null) spreadPercent = ((maxValue_local - minValue_local)/minValue_local)*100;
+        if (exchangeWithMinPrice != null && exchangeWithMaxPrice != null) spreadPercent = ((maxPrice - minPrice)/minPrice)*100;
     }
 
 

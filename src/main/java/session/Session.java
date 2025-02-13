@@ -2,11 +2,14 @@ package session;
 
 import coins.CoinsList;
 import coins.Spread;
+import pump.PumpFinder;
 import telegram.MyTelegramBot;
 import telegram.TelegramMessagesBuilder;
 import web_socket.PriceFromWebSocketListExtractor;
+import web_socket.WebSocketClient;
 import web_socket.WebSocketsList;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +22,7 @@ public class Session {
     private WebSocketsList webSocketsList = new WebSocketsList();
     private ScheduledExecutorService scheduler;
     private boolean hasCoinWithExpectedSpread;
-    private double expectedSpread = 0.5;
+    private double expectedSpread = 0.75;
 
 
 
@@ -82,6 +85,10 @@ public class Session {
                 waitForSpreadSignal();
                 break;
             }
+            case PUMP_FINDER_IN_PROGRESS: {
+                startPumpFinding();
+                break;
+            }
         }
     }
 
@@ -122,6 +129,36 @@ public class Session {
 
 
 
+    private void startPumpFinding(){
+        scheduler = Executors.newScheduledThreadPool(1);
+
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ArrayList<String[]> coinsList = CoinsList.create_list_of_coins_for_pump();
+
+                    for (String[] coinMap : coinsList){
+                        PumpFinder.findPump(coinMap[0], "Bybit");
+                        break;
+                        }
+
+
+//                    String message = TelegramMessagesBuilder.createMessageAboutSpreadAsSignalForTelegram(spread);
+//                    if (message != null) MyTelegramBot.getBot().sendMessageToChat(message);
+//                    webSocketsList.initiateSendingPingPongMessages();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        scheduler.scheduleWithFixedDelay(task, 1, 5, TimeUnit.SECONDS);
+    }
+
+
+
+
 
 
     public boolean isHasCoinWithExpectedSpread() {
@@ -138,5 +175,13 @@ public class Session {
 
     public void setExpectedSpread(double expectedSpread) {
         this.expectedSpread = expectedSpread;
+    }
+
+    public void reopenWebsocket(WebSocketClient closedWebSocket) {
+
+    }
+
+    public WebSocketsList getWebSocketsList() {
+        return webSocketsList;
     }
 }

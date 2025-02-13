@@ -8,7 +8,10 @@ public class TelegramMessagesBuilder {
         StringBuilder sb = new StringBuilder();
         sb.append("Найден спред!\n").append(spread.getCoinOfSpread().getCoin()).append("\n")
                 .append(spread.getExchangeWithMinPrice()).append(" -> ")
-                .append(spread.getExchangeWithMaxPrice()).append("\nСпред: ").append(spread.getSpreadPercent());
+                .append(spread.getExchangeWithMaxPrice())
+                .append("\nMin Price: ").append(spread.getMinPrice())
+                .append("\nMax Price: ").append(spread.getMaxPrice())
+                .append("\nСпред: ").append(spread.getSpreadPercent());
 
         return sb.toString();
     }

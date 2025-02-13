@@ -1,6 +1,5 @@
 package web_socket;
 
-import coins.Coin;
 import coins.CoinsList;
 import exchanges.Exchanges;
 import exchanges.binance.BinanceOnMessageHandler;
@@ -24,15 +23,17 @@ import java.util.zip.GZIPInputStream;
 public class WebSocketClient {
 
     private Exchanges exchange;
-    private Session userSession = null;
+    public Session userSession = null;
     private HashMap<String, Double> coinsFromWebSocket = new HashMap<>();
     private String pingpong;
+    private WebSocketsList webSocketsList;
 
 
 
-    public WebSocketClient(String uri, Exchanges exchange) {
+    public WebSocketClient(String uri, Exchanges exchange, WebSocketsList webSocketsList) {
         System.out.println(uri);
         this.exchange = exchange;
+        this.webSocketsList = webSocketsList;
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, URI.create(uri));
@@ -65,8 +66,9 @@ public class WebSocketClient {
             String convertedMessage = decompressGzip(bytes);
 
 
-            if ("Ping".equals(convertedMessage)) {
-                sendMessage("Pong");
+            if (convertedMessage.contains("ping")) {
+                String pong = BingxOnMessageHandler.createPongString(convertedMessage);
+                sendMessage(pong);
                 return;
             } else {
                 redirectMessage(convertedMessage);
@@ -77,6 +79,7 @@ public class WebSocketClient {
     }
 
     private void redirectMessage(String message) {
+
 
         switch (exchange){
             case BYBIT: {
@@ -117,13 +120,24 @@ public class WebSocketClient {
 
         System.out.println("Session closed by: " + reason);
         MyTelegramBot.getBot().sendMessageToChat("Session closed: " + this.exchange);
-        deleteCoinPriceIfWebSocketClosed();
+
+
+
+        System.out.println("Какие монеты в сокете:");
+        for (Map.Entry<String, Double> entry : coinsFromWebSocket.entrySet()){
+            System.out.println(entry.getKey());
+        }
+
+
+
+        webSocketsList.reopenClosedWebsocket(this);
     }
 
 
     public void sendMessage(String message) {
         try {
             userSession.getBasicRemote().sendText(message);
+            System.out.println("Отправил в сокет: "+message);
         } catch (Exception e) {
             System.out.println("Какая-тоо хуйня с сессией");
             e.printStackTrace();

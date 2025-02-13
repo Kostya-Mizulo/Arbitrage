@@ -41,4 +41,32 @@ public class KucoinSubscriptionString {
 
         return subscriptionStringList;
     }
+
+
+
+    public static ArrayList<String> getSubscriptionToReopen(ArrayList<String> coins) {
+        ArrayList<String> subscriptionStringList = new ArrayList<>();
+        boolean isCoinsLeft = true;
+        int coinPosition = 0;
+        int countOfCoins = coins.size();
+
+        while (isCoinsLeft) {
+            StringBuilder subscriptionString = new StringBuilder();
+
+
+            subscriptionString.append(getSubscriptionStart())
+                    .append(coins.get(coinPosition))
+                    .append(getSubscriptionEnd());
+
+            coinPosition++;
+            if (coinPosition == countOfCoins) isCoinsLeft = false;
+
+
+            subscriptionStringList.add(String.valueOf(subscriptionString));
+        }
+
+
+        return subscriptionStringList;
+    }
+
 }

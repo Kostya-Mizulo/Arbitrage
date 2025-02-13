@@ -42,4 +42,13 @@ public class BingxOnMessageHandler {
             return null;
         }
     }
+    public static String createPongString(String ping){
+
+        JSONObject jsonPing = new JSONObject(ping);
+        String idPing = jsonPing.getString("ping");
+
+        String pongString = "{\"pong\":\"" + idPing + "\"}";
+
+        return pongString;
+    }
 }

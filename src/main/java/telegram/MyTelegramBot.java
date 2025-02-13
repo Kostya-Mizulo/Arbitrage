@@ -9,7 +9,9 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import session.Session;
 import session.SessionStatus;
+import web_socket.WebSocketClient;
 
+import javax.websocket.CloseReason;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,10 +71,15 @@ public class MyTelegramBot extends TelegramLongPollingBot {
 
 
             //Обработка команды /start
-            if (messageText.equals("/start")
+            if (messageText.equals("/start_arbitrage")
                     && (session.getSessionStatus() == SessionStatus.INITIAL)) {
                 handleStartCommand();
-            } else {
+            } else
+            if (messageText.equals("/start_pump")
+                    && (session.getSessionStatus() == SessionStatus.INITIAL)){
+                handleStartPumpCommand();
+            }
+            else {
                 switch (session.getSessionStatus()) {
                     case WAITING_FOR_INITIAL_DEPOSIT_INPUT: {
                         handleGetInitialDeposit(messageText);
@@ -80,7 +87,9 @@ public class MyTelegramBot extends TelegramLongPollingBot {
                     }
                     default:
                         sendMessageToChat("Я пока в душе не ебу че с этим делать");
-                        sendMessageToChat("Значение депозита: " + session.getDeposit());
+                        WebSocketClient wsc = session.getWebSocketsList().getWebSockets().get(0);
+                        wsc.onClose(wsc.userSession,
+                                new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "Gy"));
                 }
 
 
@@ -102,7 +111,8 @@ public class MyTelegramBot extends TelegramLongPollingBot {
 
     private void setCommands(){
         List<BotCommand> commands = new ArrayList<>();
-        commands.add(new BotCommand("/start", "Запустить внешнебиржевой арбитраж"));
+        commands.add(new BotCommand("/start_arbitrage", "Запустить внешнебиржевой арбитраж"));
+        commands.add(new BotCommand("/start_pump", "Запустить сигналку пампа"));
 
         try {
             execute(new SetMyCommands(commands, new BotCommandScopeDefault(),null));
@@ -114,6 +124,12 @@ public class MyTelegramBot extends TelegramLongPollingBot {
     private void handleStartCommand(){
         session.setSessionStatus(SessionStatus.WAITING_FOR_INITIAL_DEPOSIT_INPUT);
         sendMessageToChat("Перед запуском сессии введи размер депозита целым числом в USDT");
+
+    }
+
+    private void handleStartPumpCommand(){
+        session.setSessionStatus(SessionStatus.PUMP_FINDER_IN_PROGRESS);
+        sendMessageToChat("Начинаем искать памп");
 
     }
 

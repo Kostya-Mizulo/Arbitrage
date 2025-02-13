@@ -1,5 +1,7 @@
 package coins;
 
+import exchanges.Exchanges;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,5 +56,50 @@ public class CoinsList {
     }
 
 
+    public static ArrayList<String[]> create_list_of_coins_for_pump(){
+        ArrayList<String[]> coinsList = new ArrayList<>();
+
+        String filePathBybit = "src/main/resources/bybitCoins.txt";
+        String filePathBingx = "src/main/resources/bingxCoins.txt";
+        String filePathBinance = "src/main/resources/binanceCoins.txt";
+
+
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePathBybit))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                coinsList.add(new String[]{line, "Bybit"});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePathBingx))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                coinsList.add(new String[]{line, "Bingx"});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePathBinance))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                coinsList.add(new String[]{line, "Binance"});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return coinsList;
+    }
 
 }
