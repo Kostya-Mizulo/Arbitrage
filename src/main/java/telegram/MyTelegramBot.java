@@ -37,6 +37,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             properties.load(fileInputStream);
             botUsername = properties.getProperty("botUsername");
             botToken = properties.getProperty("botToken");
+            chatId = Long.parseLong(properties.getProperty("chatId"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,8 +92,6 @@ public class MyTelegramBot extends TelegramLongPollingBot {
                         wsc.onClose(wsc.userSession,
                                 new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "Gy"));
                 }
-
-
             }
         }
     }

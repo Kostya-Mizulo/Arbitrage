@@ -139,21 +139,18 @@ public class Session {
                     ArrayList<String[]> coinsList = CoinsList.create_list_of_coins_for_pump();
 
                     for (String[] coinMap : coinsList){
-                        PumpFinder.findPump(coinMap[0], "Bybit");
-                        break;
+                        PumpFinder.findPump(coinMap[0], coinMap[1]);
+                        Thread.sleep(200);
                         }
 
-
-//                    String message = TelegramMessagesBuilder.createMessageAboutSpreadAsSignalForTelegram(spread);
-//                    if (message != null) MyTelegramBot.getBot().sendMessageToChat(message);
-//                    webSocketsList.initiateSendingPingPongMessages();
                 }
                 catch (Exception e) {
                     e.printStackTrace();
+                    MyTelegramBot.getBot().sendMessageToChat("Сломались, перезапусти!");
                 }
             }
         };
-        scheduler.scheduleWithFixedDelay(task, 1, 5, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(task, 1, 30, TimeUnit.SECONDS);
     }
 
 

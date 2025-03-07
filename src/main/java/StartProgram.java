@@ -12,6 +12,8 @@ public class StartProgram {
             botsApi.registerBot(new MyTelegramBot());
         } catch (TelegramApiException e) {
             e.printStackTrace();
+            System.out.println("Перезапустить!");
         }
+        System.out.println("Перезапустить!");
     }
 }
